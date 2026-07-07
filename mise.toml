@@ -1,0 +1,38 @@
+[tools]
+"conda:chktex" = "1.7.9"
+"conda:tectonic" = "0.16.9"
+"conda:tex-fmt" = "0.5.7"
+"http:biber" = { version = "2.17", url = "{% if env.OS == 'Windows_NT' %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Windows/biber-win_x86_64.zip/download{% else %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Linux/biber-linux_x86_64.tar.gz/download{% endif %}", postinstall = """
+{% if env.OS == 'Windows_NT' -%}
+mkdir bin && move biber.exe bin/
+{%- else -%}
+mkdir -p bin
+if [ -f biber ]; then
+    mv biber bin/
+elif [ -f */biber ]; then
+    mv */biber bin/
+fi
+true
+{%- endif %}
+""" }
+
+[env]
+_.path = "/home/vscode/.local/share/mise/installs/http-biber/2.17/bin"
+
+[tasks.buildx]
+run = """
+tectonic -X compile main.tex --keep-intermediates \
+&& biber main \
+&& tectonic -X compile main.tex --keep-intermediates \
+&& tectonic -X compile main.tex --keep-intermediates
+"""
+
+[tasks.build]
+run = "tectonic -X compile main.tex"
+
+
+[tasks.clean]
+run = "rm -f *.aux *.bbl *.blg *.toc *.out *.log *.bcf *.run.xml"
+
+[tasks.rebuild]
+depends = ["clean", "build"]

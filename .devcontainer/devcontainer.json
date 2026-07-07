@@ -1,0 +1,52 @@
+{
+    "name": "latex-mise-tectonic",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localWorkspaceFolderBasename}-mise-data,target=/home/vscode/.local/share/mise,type=volume",
+        "source=${localWorkspaceFolderBasename}-tectonic-cache,target=/home/vscode/.cache/Tectonic,type=volume"
+    ],
+    "postCreateCommand": "sudo chown -R vscode /home/vscode/.local/share/mise /home/vscode/.cache/Tectonic 2>/dev/null || true && mise trust && mise install",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "James-Yu.latex-workshop",
+                "ms-vscode.mise",
+                "fedaykindev.openchamber"
+            ],
+            "settings": {
+                "latex-workshop.latex.tools": [
+                    {
+                        "name": "tectonic",
+                        "command": "mise",
+                        "args": [
+                            "run",
+                            "build"
+                        ]
+                    }
+                ],
+                "latex-workshop.latex.recipes": [
+                    {
+                        "name": "tectonic",
+                        "tools": [
+                            "tectonic"
+                        ]
+                    }
+                ],
+                "latex-workshop.latex.magic.args.enabled": false,
+                "latex-workshop.latex.magic.program.enabled": false,
+                "latex-workshop.latex.recipe.default": "tectonic",
+                "latex-workshop.formatting.latex": "tex-fmt",
+                "latex-workshop.linting.chktex.exec.args": [
+                    "-wall",
+                    "-n22",
+                    "-n30",
+                    "-e16",
+                    "%DOC%"
+                ]
+            }
+        }
+    }
+}
