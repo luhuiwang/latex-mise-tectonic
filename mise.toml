@@ -2,7 +2,7 @@
 "conda:chktex" = "1.7.9"
 "conda:tectonic" = "0.16.9"
 "conda:tex-fmt" = "0.5.7"
-"http:biber" = { version = "2.17", url = "{% if env.OS == 'Windows_NT' %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Windows/biber-win_x86_64.zip/download{% else %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Linux/biber-linux_x86_64.tar.gz/download{% endif %}", postinstall = """
+"http:biber" = { version = "2.17", url = "{% if env.OS == 'Windows_NT' %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Windows/biber-MSWIN64.zip/download{% else %}https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/{{ version }}/binaries/Linux/biber-linux_x86_64.tar.gz/download{% endif %}", postinstall = """
 {% if env.OS == 'Windows_NT' -%}
 mkdir bin && move biber.exe bin/
 {%- else -%}
